@@ -1,0 +1,6 @@
+spring:
+ profiles:
+   active: test
+ cloud:
+   config:
+    enabled: false

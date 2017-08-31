@@ -1,0 +1,94 @@
+buildscript {
+    ext {
+        springBootVersion = '1.4.3.RELEASE'
+        springOauth2Version = '2.0.12.RELEASE'
+        wiremockVersion = '2.1.12'
+        swaggerVersion = '2.5.0'
+        h2Version = '1.4.190'
+        liquibaseVersion = '3.4.2'
+        postgresqlVersion = '9.1-901-1.jdbc4'
+        assertjVersion = '3.5.2'
+        mockitoVersion = '1.10.19'
+        junitVersion = '4.12'
+        htmlunitVersion = '2.20'
+        jackson310ModuleVersion = '2.8.3'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+apply plugin: 'io.spring.dependency-management'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Brixton.SR5'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    archiveName = 'gateway.jar'
+}
+
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    compile('org.springframework.boot:spring-boot-starter-hateoas')
+    compile('org.springframework.cloud:spring-cloud-starter-eureka')
+    compile('org.springframework.cloud:spring-cloud-config-client')
+    compile('org.springframework.cloud:spring-cloud-starter-zuul')
+
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-feign'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+
+    //    For rest documentation
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: "${swaggerVersion}"
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: "${swaggerVersion}"
+    compile group: 'com.h2database', name: 'h2', version: "${h2Version}"
+
+    compile group: 'postgresql', name: 'postgresql', version: "${postgresqlVersion}"
+    compile group: 'org.liquibase', name: 'liquibase-core', version: "${liquibaseVersion}"
+    compile group: 'org.jadira.usertype', name: 'usertype.extended', version: '5.0.0.GA'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: "${jackson310ModuleVersion}"
+
+    compile group: 'org.springframework.retry', name: 'spring-retry', version: '1.1.3.RELEASE'
+    compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: "${springOauth2Version}"
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+    compile group: 'org.liquibase', name: 'liquibase-core', version: '3.5.3'
+
+    compile("com.github.tomakehurst:wiremock-standalone:${wiremockVersion}") {
+        exclude group: 'com.fasterxml.jackson'
+        exclude group: 'org.apache.httpcomponents'
+        exclude group: 'org.mortbay.jetty', module: 'servlet-api'
+        exclude group: 'org.mortbay.jetty', module: 'jetty'
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+        exclude group: 'org.skyscreamer', module: 'jsonassert'
+        exclude group: 'xmlunit', module: 'xmlunit'
+        exclude group: 'com.jayway.jsonpath', module: 'json-path'
+        exclude group: 'net.sf.jopt-simple', module: 'jopt-simple'
+    }
+
+    compile 'ch.qos.logback:logback-classic:1.1.7'
+
+    testCompile group: 'net.sourceforge.htmlunit', name: 'htmlunit', version: "${htmlunitVersion}"
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    testCompile group: 'org.assertj', name: 'assertj-core', version: "${assertjVersion}"
+    testCompile group: 'org.mockito', name: 'mockito-core', version: "${mockitoVersion}"
+    testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
+}

@@ -1,0 +1,71 @@
+---
+eureka:
+  client:
+    fetchRegistry: false
+    registerWithEureka: false
+    server:
+      waitTimeInMsWhenSyncEmpty: 0
+liquibase:
+  changeLog: "classpath:db/changelog/master.xml"
+server:
+  context-path: /gateway/
+  port: "${PORTS:7015}"
+
+spring:
+  application:
+    name: test-gateway
+  datasource:
+    url: "jdbc:h2:mem:gateway;MODE=PostgreSQL;DB_CLOSE_ON_EXIT=TRUE"
+
+  zipkin:
+    enabled: false
+  sleuth:
+    async:
+      enabled: false
+  jpa:
+    show_sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      jadira.usertype:
+        autoRegisterUserTypes: true
+        javaZone: UTC
+        databaseZone: UTC
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+
+ribbon:
+  eureka:
+    enabled: false
+
+hystrix:
+  command:
+    default:
+      circuitBreaker:
+        enabled: false
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+
+zuul:
+  debug:
+    request: true
+  ignoredServices: '*'
+  sensitiveHeaders: ''
+
+
+assets:
+  ribbon:
+    listOfServers: localhost:9999
+
+
+
+authentication:
+    oauth:
+        clientid: debitumapp
+        secret: x58GUKN8TQHB3FG
+

@@ -1,0 +1,10 @@
+management:
+  context-path: /management
+
+spring:
+  jpa:
+    properties:
+      jadira.usertype:
+        autoRegisterUserTypes: true
+        javaZone: UTC
+        databaseZone: UTC
